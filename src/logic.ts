@@ -44,8 +44,11 @@ export const listMovies = async (
     return res.json(queryResult.rows);
 };
 
+export const catchMovieById = async (
+    req: Request,
+    res: Response
+): Promise<Response> => {
+    const movie: Imovie = res.locals.movie;
 
-
-
-
-
+    return res.json(movie);
+};
