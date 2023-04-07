@@ -1,6 +1,6 @@
 import express, {Application, json} from "express";
 import { startDatabase } from "./database";
-import { catchMovieById, createMovie, listMovies, updateMovie } from "./logic";
+import { catchMovieById, createMovie, deleteMovie, listMovies, updateMovie } from "./logic";
 import { ensureMovieExistsMiddleware } from "./middlewares";
 
 const app: Application = express();
@@ -13,7 +13,7 @@ app.post("/movies", createMovie);
 app.get("/movies", listMovies);
 app.get("/movies/:id",ensureMovieExistsMiddleware , catchMovieById);
 app.patch("/movies/:id", ensureMovieExistsMiddleware, updateMovie);
-app.delete("/movies/:id", ensureMovieExistsMiddleware, /* middlewares & logic */);
+app.delete("/movies/:id", ensureMovieExistsMiddleware, deleteMovie);
 
 app.listen(PORT, async() => {
     await startDatabase();
