@@ -9,7 +9,7 @@ export const client: Client = new Client({
 });
 
 export const startDatabase = async (): Promise<void> => {
-    await client.connect()
-    console.log('Database connected')
+    await client.connect();
+    console.log('Database connected');
 };
 
