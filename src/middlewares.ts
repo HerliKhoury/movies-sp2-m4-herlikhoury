@@ -28,7 +28,7 @@ export const ensureMovieExistsMiddleware = async (
 
     if (queryResult.rowCount === 0) {
         return res.status(404).json({
-            message: "Movie not found!"
+            error: "Movie not found!"
         })
     }
 
@@ -36,3 +36,5 @@ export const ensureMovieExistsMiddleware = async (
 
     return next();
 };
+
+

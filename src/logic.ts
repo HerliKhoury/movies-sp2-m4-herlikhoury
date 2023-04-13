@@ -34,6 +34,40 @@ export const listMovies = async (
     req: Request,
     res: Response
 ): Promise<Response> => {
+    
+    const movieCategory = req.query.category;
+
+    if(movieCategory){
+        const queryStringCategory: string = `
+            SELECT
+                *
+            FROM
+                movies
+            WHERE category = $1;
+        `;
+
+        const queryConfig: QueryConfig = {
+            text: queryStringCategory,
+            values: [movieCategory],
+        };
+
+        const queryResult: QueryResult<Imovie> = await client.query(queryConfig);
+        
+        if(queryResult.rowCount === 0){
+            const queryStringCategoryFail: string = `
+                SELECT
+                    *
+                FROM
+                    movies;
+            `;
+
+            const queryResultFail: QueryResult<Imovie> = await client.query(queryStringCategoryFail);
+            return res.json(queryResultFail.rows);
+        }
+        
+        return res.json(queryResult.rows);
+    }
+
     const queryString: string = `
         SELECT
             *
