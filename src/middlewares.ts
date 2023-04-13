@@ -3,7 +3,7 @@ import { QueryConfig, QueryResult } from "pg";
 import { Imovie } from "./interfaces";
 import { client } from "./database";
 
-export const ensureMovieExistsMiddleware = async (
+export const ensureMovieExistsByIdMiddleware = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -38,3 +38,38 @@ export const ensureMovieExistsMiddleware = async (
 };
 
 
+export const ensureMovieExistsByNameMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response | void> => {
+    const movieName: string = req.body.name;
+
+    if(movieName){
+        const queryStringName: string = `
+            SELECT
+                *
+            FROM
+                movies
+            WHERE name = $1;
+        `;
+
+        const queryConfigName: QueryConfig = {
+            text: queryStringName,
+            values: [movieName]
+        }
+
+        const queryResultName: QueryResult<Imovie> = await client.query(queryConfigName);
+
+        if(queryResultName.rowCount === 0){
+            return next();
+        } else{
+            return res.status(409).json({
+                "error": "Movie name already exists!"
+            });
+        };
+    };
+
+
+    return next();
+}
