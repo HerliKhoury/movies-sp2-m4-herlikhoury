@@ -12,7 +12,7 @@ const runningMsg: string = `Server running on http://localhost:${PORT}`;
 app.post("/movies", ensureMovieExistsByNameMiddleware, createMovie);
 app.get("/movies", listMovies);
 app.get("/movies/:id",ensureMovieExistsByIdMiddleware , catchMovieById);
-app.patch("/movies/:id",ensureMovieExistsByNameMiddleware, ensureMovieExistsByIdMiddleware, updateMovie);
+app.patch("/movies/:id", ensureMovieExistsByIdMiddleware, ensureMovieExistsByNameMiddleware, updateMovie);
 app.delete("/movies/:id", ensureMovieExistsByIdMiddleware, deleteMovie);
 
 app.listen(PORT, async() => {
